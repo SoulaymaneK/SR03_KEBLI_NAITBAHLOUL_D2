@@ -1,5 +1,5 @@
 # Backend – Application de Chat (Whispy)
-  👉 [Accéder au README du frontend](https://github.fr/SoulaymaneK/sr03_kebli_naitbahloul_d2/-/blob/main/frontend/README.md)
+  👉 [Accéder au README du frontend](https://github.com/SoulaymaneK/SR03_KEBLI_NAITBAHLOUL_D2/blob/main/frontend/README.md)
 
 
 ## 🎯 Introduction
