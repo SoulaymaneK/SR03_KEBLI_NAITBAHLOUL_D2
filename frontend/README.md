@@ -1,70 +1,129 @@
-# Getting Started with Create React App
+# Frontend – Application de Chat (Whispy)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 🎯 Introduction
 
-## Available Scripts
+Ce projet est l’interface web d’une application de salons de discussion en temps réel. Chaque utilisateur peut planifier un salon à une date et durée précises, inviter d’autres utilisateurs, et échanger en direct par messagerie instantanée.
 
-In the project directory, you can run:
+L’interface est développée en **React** et communique avec un backend **Spring Boot** via des **API REST** et une **connexion WebSocket** personnalisée.  
+📌 Aucun message n’est stocké : seuls les utilisateurs connectés au salon en cours reçoivent les messages échangés.
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 🧰 Technologies principales
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **React 18** : SPA moderne et fluide
+- **React Router DOM** : gestion des pages (login, tableau de bord, chat...)
+- **Axios** : requêtes HTTP vers le backend
+- **Tailwind CSS** : design responsive pastel, inspiré de Messenger/Signal
+- **WebSocket API (natif)** : échanges temps réel sans STOMP/Socket.io
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## ✨ Fonctionnalités
 
-### `npm run build`
+- 🔐 **Inscription / Connexion sécurisées**
+- 🧠 **Création et gestion de salons** : titre, description, date, durée
+- 📩 **Invitation d’utilisateurs** : à la création ou modification d’un salon
+- 📋 **Tableau de bord** : salons créés, salons rejoints, invitations reçues
+- 💬 **Messagerie en temps réel** via WebSocket
+- 📱 **Interface responsive** : desktop & mobile
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 🏗️ Architecture générale
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Les **API REST** permettent :
+  - Authentification
+  - Création et gestion des salons
+  - Gestion des participants
 
-### `npm run eject`
+- La **connexion WebSocket** :
+  - Est établie à l’ouverture d’un salon
+  - Permet d’envoyer/recevoir les messages instantanément
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Le frontend est totalement dépendant du backend pour la logique métier. Les deux partagent le même modèle de données (utilisateurs, salons...).
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## 🧩 Modèle de données (côté backend)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- **Users** : id, nom, prénom, email, mot de passe, booléen `admin`
+- **Chatroom** : id, titre, description, date, durée, propriétaire
+- **UserChat** : jointure (utilisateur ↔ salon)
+- **Messages** : non stockés (temps réel uniquement)
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 🔄 Interaction React ↔ Backend
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- **API REST** :
+  - `POST /api/login`, `POST /api/register`
+  - `POST /api/chats`, `GET /api/users/{id}/chats`, etc.
 
-### Code Splitting
+- **WebSocket** :
+  - Connexion via `ws://localhost:8080/chat/{idSalon}/{pseudo}`
+  - Envoi & réception des messages instantanés
+  - Écouteur `onmessage` côté React
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- **UI dynamique** :
+  - Mise à jour automatique des vues en fonction du state
+  - Gestion des erreurs (login invalide, accès refusé, etc.)
 
-### Analyzing the Bundle Size
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 🚀 Installation et lancement en local
 
-### Making a Progressive Web App
+### 🔧 Prérequis
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- Node.js (v14+ recommandé)
+- npm ou Yarn
 
-### Advanced Configuration
+### 🛠️ Étapes
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-### Deployment
+### 1. Cloner le dépôt
+```bash
+git clone https://github.com/votre-repo/frontend.git
+cd frontend
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### 2. Installer les dépendances
+```bash
+npm install
+```
 
-### `npm run build` fails to minify
+### 3. Lancer le serveur de développement
+```bash
+npm start
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 🧪 Tests en conditions réelles
+
+L’application sera accessible sur : [http://localhost:3000](http://localhost:3000)  
+Le backend Spring Boot doit être lancé sur : [http://localhost:8080](http://localhost:8080)
+
+### Étapes de test
+
+- Créez plusieurs comptes utilisateurs
+- Ouvrez deux navigateurs différents (ou une fenêtre de navigation privée)
+- Connectez chaque compte avec des identifiants différents
+- Rejoignez un même salon de discussion
+- Échangez des messages : ils doivent s’afficher instantanément sur les deux interfaces
+
+---
+
+## 🌿 Éco-index & éco-conception
+
+**Score EcoIndex : B (77/100)**
+
+### 🔎 Raisons du bon score
+
+- Interface légère (peu d’images lourdes)
+- Utilisation de Tailwind CSS avec purge automatique
+- Application en SPA : aucune recharge de page complète
+
+### 📈 Pistes d’amélioration
+
+- Mise en place de **lazy loading** sur les composants volumineux
+- Activation de la **compression** et **mise en cache** des ressources HTTP
+- Chargement local des **polices web** pour limiter les requêtes externes
