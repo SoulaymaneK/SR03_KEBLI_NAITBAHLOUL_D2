@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Liste des utilisateurs</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <script>
+        function toggleProfileMenu() {
+            const menu = document.getElementById("profileMenu");
+            menu.style.display = menu.style.display === "block" ? "none" : "block";
+        }
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById("profileMenu");
+            const profileImg = document.querySelector("header img");
+            if (!profileImg.contains(event.target) && !menu.contains(event.target)) {
+                menu.style.display = "none";
+            }
+        });
+    </script>
+</head>
+
+<body class="min-h-screen flex flex-col bg-gradient-to-br from-pink-100 via-rose-100 to-indigo-100 text-gray-800">
+
+<!-- Header -->
+<header class="bg-white shadow-md sticky top-0 z-50 px-6 py-4 flex justify-between items-center">
+    <a href="/admin" class="text-2xl font-bold text-rose-600 hover:text-rose-700 transition">
+        Administration - Utilisateurs
+    </a>
+    <div class="relative">
+        <img src="/img/logo.png"
+             alt="Profil"
+             class="w-12 h-12 rounded-full shadow cursor-pointer"
+             onclick="toggleProfileMenu()" />
+        <div id="profileMenu" class="absolute top-full right-0 mt-2 w-48 bg-indigo-500 text-white rounded-xl shadow-lg p-4 z-50 hidden">
+            <p th:text="${userFullName}" class="text-sm font-semibold mb-2"></p>
+            <a href="/logout" class="text-sm hover:underline">Se déconnecter</a>
+        </div>
+    </div>
+</header>
+
+<!-- Contenu principal -->
+<main class="flex-grow max-w-6xl mx-auto px-6 py-10 space-y-6">
+
+    <!-- Recherche -->
+    <form th:action="@{/admin}" method="get" class="flex gap-4 mb-6">
+        <input type="search" name="search" placeholder="Rechercher..."
+               th:value="${search}"
+               class="flex-1 px-4 py-2 border border-rose-300 rounded-full shadow focus:ring-2 focus:ring-rose-400 bg-white" />
+        <button type="submit"
+                class="bg-indigo-600 text-white px-6 py-2 rounded-full shadow hover:bg-indigo-700 transition transform hover:scale-105">
+            🔍 Rechercher
+        </button>
+    </form>
+
+    <!-- Tableau -->
+    <div class="overflow-x-auto rounded-2xl shadow bg-white">
+        <table class="min-w-full text-sm text-left">
+            <thead class="bg-pink-200 text-rose-700 font-semibold">
+            <tr>
+                <th class="px-4 py-3">ID</th>
+                <th class="px-4 py-3">Prénom</th>
+                <th class="px-4 py-3">Nom</th>
+                <th class="px-4 py-3">Email</th>
+                <th class="px-4 py-3">Status</th>
+                <th class="px-4 py-3 text-center">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${myusers}" class="hover:bg-rose-50 transition">
+                <td class="px-4 py-3" th:text="${user.id}"></td>
+                <td class="px-4 py-3" th:text="${user.firstname}"></td>
+                <td class="px-4 py-3" th:text="${user.lastname}"></td>
+                <td class="px-4 py-3" th:text="${user.email}"></td>
+                <td class="px-4 py-3">
+                    <span th:if="${user.status}" class="text-green-500 font-bold">&#10004;</span>
+                    <span th:unless="${user.status}" class="text-red-500 font-bold">&#10006;</span>
+                </td>
+                <td class="px-4 py-3 text-center space-x-2">
+                    <a th:href="@{/admin/users/edit/{id}(id=${user.id})}"
+                       class="inline-block px-4 py-1.5 rounded-full shadow-md text-sm transition transform hover:scale-105
+                         bg-rose-500 text-black hover:bg-rose-600 border border-transparent">
+                        ✏️ Modifier
+                    </a>
+                    <a th:href="@{/admin/users/delete/{id}(id=${user.id})}"
+                       onclick="return confirm('Supprimer cet utilisateur ?');"
+                       class="inline-block px-4 py-1.5 rounded-full shadow-md text-sm transition transform hover:scale-105
+                         bg-gray-700 text-white hover:bg-black border border-transparent">
+                        🗑️ Supprimer
+                    </a>
+                </td>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="flex justify-center mt-6 space-x-2">
+        <a th:href="@{/admin(page=${previousPage}, search=${search})}"
+           th:classappend="${currentPage == 0} ? 'pointer-events-none opacity-50'"
+           class="px-4 py-2 bg-indigo-100 hover:bg-indigo-200 border border-indigo-300 text-indigo-800 rounded-full text-sm transition">
+            ⬅ Précédent
+        </a>
+        <a th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+           th:href="@{/admin(page=${i}, search=${search})}"
+           th:classappend="${i == currentPage} ? 'bg-rose-500 text-white' : 'bg-white text-rose-500'"
+           class="px-4 py-2 border border-rose-200 rounded-full text-sm hover:bg-rose-100 transition">
+            <span th:text="${i + 1}">1</span>
+        </a>
+        <a th:href="@{/admin(page=${nextPage}, search=${search})}"
+           th:classappend="${currentPage == totalPages - 1} ? 'pointer-events-none opacity-50'"
+           class="px-4 py-2 bg-indigo-100 hover:bg-indigo-200 border border-indigo-300 text-indigo-800 rounded-full text-sm transition">
+            Suivant ➡
+        </a>
+    </div>
+
+    <!-- Ajouter un utilisateur -->
+    <div class="text-center mt-10">
+        <a th:href="@{/register}"
+           class="inline-block bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-full shadow-md text-base transition transform hover:scale-105">
+            ➕ Ajouter un utilisateur
+        </a>
+    </div>
+</main>
+
+<!-- Footer fixé en bas -->
+<footer class="bg-white border-t mt-auto text-center py-4 text-gray-400 text-sm">
+    &copy; 2025 - Interface Admin
+</footer>
+
+</body>
+</html>

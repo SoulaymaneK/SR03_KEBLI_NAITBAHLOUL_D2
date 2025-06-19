@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des utilisateurs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="min-h-screen bg-gradient-to-br from-pink-100 via-rose-100 to-indigo-100 py-12 px-4">
+
+<header class="text-center mb-10">
+    <h1 class="text-3xl font-bold text-rose-600">📋 Liste des utilisateurs</h1>
+</header>
+
+<main class="max-w-5xl mx-auto bg-white rounded-3xl border border-rose-100 shadow-lg p-6 overflow-auto">
+    <table class="min-w-full table-auto border-collapse">
+        <thead class="bg-rose-100 text-gray-700">
+        <tr>
+            <th class="px-4 py-3 text-left font-semibold">ID</th>
+            <th class="px-4 py-3 text-left font-semibold">Prénom</th>
+            <th class="px-4 py-3 text-left font-semibold">Nom</th>
+            <th class="px-4 py-3 text-left font-semibold">Email</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${myusers}" class="hover:bg-pink-50 transition">
+            <td class="px-4 py-3 border-t" th:text="${user.getId()}"></td>
+            <td class="px-4 py-3 border-t" th:text="${user.getFirstname()}"></td>
+            <td class="px-4 py-3 border-t" th:text="${user.getLastname()}"></td>
+            <td class="px-4 py-3 border-t" th:text="${user.getEmail()}"></td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+
+<footer class="text-center text-sm text-gray-500 mt-12">
+    <p>&copy; 2025 - SR03 Application</p>
+</footer>
+
+</body>
+</html>

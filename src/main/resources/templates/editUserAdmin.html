@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Éditer un utilisateur</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+</head>
+<body class="min-h-screen bg-gradient-to-br from-pink-100 via-rose-100 to-indigo-100 text-gray-800">
+
+<header class="bg-white shadow px-6 py-4 sticky top-0 z-50">
+    <h1 class="text-2xl font-bold text-rose-600">Éditer l'utilisateur</h1>
+</header>
+
+<main class="max-w-xl mx-auto px-6 py-10">
+    <div class="bg-white rounded-3xl shadow-xl border border-rose-100 p-8 space-y-6">
+
+        <form th:action="@{/admin/users/update/{id}(id=${user.id})}" method="post" enctype="multipart/form-data" class="space-y-5">
+
+            <!-- Avatar affiché -->
+            <div class="flex justify-center">
+                <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-pink-300 shadow-lg">
+                    <img th:src="@{/admin/users/avatar/{id}(id=${user.id})}" alt="Avatar"
+                         class="w-full h-full object-cover"/>
+                </div>
+            </div>
+
+            <div>
+                <label for="firstname" class="block text-sm font-semibold text-gray-700 mb-1">Prénom</label>
+                <input type="text" id="firstname" name="firstname" th:value="${user.getFirstname()}"
+                       required
+                       class="w-full px-4 py-2 border border-rose-200 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-rose-300" />
+            </div>
+
+            <div>
+                <label for="lastname" class="block text-sm font-semibold text-gray-700 mb-1">Nom</label>
+                <input type="text" id="lastname" name="lastname" th:value="${user.getLastname()}"
+                       required
+                       class="w-full px-4 py-2 border border-rose-200 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-rose-300" />
+            </div>
+
+            <div>
+                <label for="email" class="block text-sm font-semibold text-gray-700 mb-1">Email</label>
+                <input type="email" id="email" name="email" th:value="${user.getEmail()}"
+                       required
+                       class="w-full px-4 py-2 border border-rose-200 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-rose-300" />
+            </div>
+
+            <!-- Admin -->
+            <div class="flex items-center gap-2">
+                <input type="checkbox" id="admin" name="admin" th:checked="${user.isAdmin()}"
+                       class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-rose-400" />
+                <label for="admin" class="text-sm text-gray-700">Est administrateur</label>
+            </div>
+
+            <!-- Actif -->
+            <div class="flex items-center gap-2">
+                <input type="checkbox" id="status" name="status" th:checked="${user.isStatus()}"
+                       class="rounded border-gray-300 text-green-600 shadow-sm focus:ring-rose-400" />
+                <label for="status" class="text-sm text-gray-700">Actif</label>
+            </div>
+
+            <div class="flex justify-end gap-4 pt-4">
+                <button type="submit"
+                        class="px-6 py-2 bg-indigo-500 text-white font-semibold rounded-full shadow-md hover:bg-indigo-600 transition transform hover:scale-105 duration-200 ease-in-out">
+                    Sauvegarder
+                </button>
+                <a href="/admin"
+                   class="px-6 py-2 border border-gray-300 text-gray-600 rounded-full hover:bg-gray-100 transition transform hover:scale-105 duration-200 ease-in-out">
+                    Annuler
+                </a>
+            </div>
+
+        </form>
+    </div>
+</main>
+
+<footer class="text-center text-gray-400 text-sm py-6 mt-10">
+    &copy; 2025 - Interface Admin
+</footer>
+
+</body>
+</html>

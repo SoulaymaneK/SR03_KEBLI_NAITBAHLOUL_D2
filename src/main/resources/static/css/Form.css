@@ -1,0 +1,104 @@
+body {
+    background-color: #f2f4f8;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #2c3e50;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: linear-gradient(to bottom right, #fce4ec, #e8eaf6);
+}
+
+form {
+    background-color: white;
+    padding: 2.5rem 3rem;
+    border-radius: 20px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    width: 100%;
+    max-width: 420px;
+    box-sizing: border-box;
+    animation: fadeSlideIn 0.4s ease-in-out;
+}
+
+h1 {
+    color: #2d89ef;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
+}
+
+form > div {
+    margin-bottom: 1.5rem;
+}
+
+label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #2c3e50;
+    font-size: 0.95rem;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 0.6rem 1rem;
+    border: 1.5px solid #ccc;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.2s ease;
+    box-sizing: border-box;
+    color: #222;
+    background-color: #fdfdfd;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+    border-color: #2d89ef;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(45, 137, 239, 0.1);
+}
+
+input[type="submit"] {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #2d89ef;
+    border: none;
+    border-radius: 14px;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s;
+    box-shadow: 0 4px 12px rgba(45, 137, 239, 0.25);
+}
+
+input[type="submit"]:hover {
+    background-color: #1b5fbd;
+    transform: scale(1.02);
+}
+
+/* ============ MESSAGE D'ERREUR ============ */
+p.error-message {
+    color: #e74c3c;
+    font-size: 0.9rem;
+    text-align: center;
+    margin-top: -0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* ============ ANIMATIONS ============ */
+@keyframes fadeSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
